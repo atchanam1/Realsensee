@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,6 +9,7 @@ const menuItems = [
   { href: '/leave/history', label: 'ประวัติการลา', icon: '📋' },
   { href: '/attendance', label: 'บันทึกการมา', icon: '📅' },
   { href: '/gang-history', label: 'ประวัติเข้า-ออกแก๊ง', icon: '🏃' },
+  { href: '/gang-run', label: 'มารันแก๊ง', icon: '⚔️' },
   { href: '/items', label: 'ส่งของ', icon: '📦' },
 ]
 
