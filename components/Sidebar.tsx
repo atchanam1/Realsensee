@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -21,9 +21,8 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 min-h-screen bg-[#1a1a2e] border-r border-[#2d2d4e] flex flex-col">
-      {/* Logo */}
-      <div className="p-6 border-b border-[#2d2d4e]">
+    <aside className="w-64 min-h-screen bg-[#111111] border-r border-[#222222] flex flex-col">
+      <div className="p-6 border-b border-[#222222]">
         <div className="flex items-center gap-3">
           <span className="text-3xl">⚔️</span>
           <div>
@@ -33,20 +32,19 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* User info */}
-      <div className="p-4 border-b border-[#2d2d4e]">
+      <div className="p-4 border-b border-[#222222]">
         <div className="flex items-center gap-3">
           <img
-            src={session?.user?.image || `https://ui-avatars.com/api/?name=${session?.user?.username}`}
+            src={session?.user?.image || `https://ui-avatars.com/api/?name=${session?.user?.username}&background=333&color=fff`}
             alt="avatar"
-            className="w-10 h-10 rounded-full border-2 border-purple-500"
+            className="w-10 h-10 rounded-full border-2 border-white/20"
           />
           <div className="overflow-hidden">
             <p className="text-sm font-semibold text-white truncate">{session?.user?.username}</p>
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               session?.user?.role === 'admin'
-                ? 'bg-purple-500/20 text-purple-300'
-                : 'bg-blue-500/20 text-blue-300'
+                ? 'bg-white/20 text-white'
+                : 'bg-white/10 text-gray-300'
             }`}>
               {session?.user?.role === 'admin' ? '👑 Admin' : '🎮 Member'}
             </span>
@@ -54,7 +52,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
         {menuItems.map((item) => (
           <Link
@@ -62,8 +59,8 @@ export default function Sidebar() {
             href={item.href}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
               pathname === item.href
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
-                : 'text-gray-400 hover:bg-[#2d2d4e] hover:text-white'
+                ? 'bg-white text-black shadow-lg'
+                : 'text-gray-400 hover:bg-white/10 hover:text-white'
             }`}
           >
             <span className="text-lg">{item.icon}</span>
@@ -82,8 +79,8 @@ export default function Sidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   pathname === item.href
-                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
-                    : 'text-gray-400 hover:bg-[#2d2d4e] hover:text-white'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <span className="text-lg">{item.icon}</span>
@@ -94,8 +91,7 @@ export default function Sidebar() {
         )}
       </nav>
 
-      {/* Sign out */}
-      <div className="p-4 border-t border-[#2d2d4e]">
+      <div className="p-4 border-t border-[#222222]">
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"

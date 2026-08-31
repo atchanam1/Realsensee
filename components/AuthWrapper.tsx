@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -15,8 +15,8 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0f0f1a]">
-        <div className="animate-spin w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[#080808]">
+        <div className="animate-spin w-10 h-10 border-4 border-white border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -24,7 +24,7 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   if (status !== 'authenticated' || !session?.user?.isApproved) return null
 
   return (
-    <div className="flex min-h-screen bg-[#0f0f1a]">
+    <div className="flex min-h-screen bg-[#080808]">
       <Sidebar />
       <main className="flex-1 p-6 overflow-auto">
         {children}
