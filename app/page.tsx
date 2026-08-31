@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -43,7 +43,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#080808]">
       <div className="bg-[#111111] border border-[#222222] rounded-2xl p-10 max-w-sm w-full text-center shadow-2xl">
-        <div className="text-6xl mb-4">⚔️</div>
+        <img src="/logo.png" alt="logo" className="w-24 h-24 object-contain mx-auto mb-2" />
         <h1 className="text-3xl font-bold text-white mb-1">Gang System</h1>
         <p className="text-gray-500 text-sm mb-8">ระบบจัดการแก๊ง</p>
 

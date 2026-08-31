@@ -25,7 +25,7 @@ export default function Sidebar() {
     <aside className="w-64 min-h-screen bg-[#111111] border-r border-[#222222] flex flex-col">
       <div className="p-6 border-b border-[#222222]">
         <div className="flex items-center gap-3">
-          <span className="text-3xl">⚔️</span>
+          <img src="/logo.png" alt="logo" className="w-10 h-10 object-contain" />
           <div>
             <h1 className="text-lg font-bold text-white">Gang System</h1>
             <p className="text-xs text-gray-500">ระบบจัดการแก๊ง</p>
