@@ -9,7 +9,7 @@ declare module 'next-auth' {
       email?: string | null
       image?: string | null
       username: string
-      role: 'admin' | 'member'
+      role: 'admin' | 'member' | 'superadmin'
       isApproved: boolean
     }
   }
