@@ -45,11 +45,13 @@ export default function Sidebar() {
           <div className="overflow-hidden">
             <p className="text-sm font-semibold text-white truncate">{session?.user?.username}</p>
             <span className={`text-xs px-2 py-0.5 rounded-full ${
-              session?.user?.role === 'admin'
+              session?.user?.role === 'superadmin'
+                ? 'bg-yellow-500/20 text-yellow-300'
+                : session?.user?.role === 'admin'
                 ? 'bg-white/20 text-white'
                 : 'bg-white/10 text-gray-300'
             }`}>
-              {session?.user?.role === 'admin' ? '👑 Admin' : '🎮 Member'}
+              {session?.user?.role === 'superadmin' ? '⭐ Superadmin' : session?.user?.role === 'admin' ? '👑 Admin' : '🎮 Member'}
             </span>
           </div>
         </div>

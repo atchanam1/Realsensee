@@ -14,7 +14,7 @@ const ITEMS = [
 export default function ItemsPage() {
   const { data: session } = useSession()
   const router = useRouter()
-  const isAdmin = session?.user?.role === 'admin'
+  const isAdmin = ['admin', 'superadmin'].includes(session?.user?.role || '')
 
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])

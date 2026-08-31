@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import AuthWrapper from '@/components/AuthWrapper'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 export default function GangRunPage() {
   const { data: session } = useSession()
-  const isAdmin = session?.user?.role === 'admin'
+  const isAdmin = ['admin', 'superadmin'].includes(session?.user?.role || '')
 
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])
