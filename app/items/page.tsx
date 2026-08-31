@@ -17,8 +17,8 @@ export default function ItemsPage() {
   const isAdmin = session?.user?.role === 'admin'
 
   useEffect(() => {
-    if (session && !isAdmin) router.push('/dashboard')
-  }, [session, isAdmin, router])
+    if (session && session.user?.role !== 'admin') router.push('/dashboard')
+  }, [session, router])
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState('')
