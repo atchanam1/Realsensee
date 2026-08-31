@@ -2,6 +2,7 @@
 import AuthWrapper from '@/components/AuthWrapper'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
 
 const ITEMS = [
@@ -12,7 +13,12 @@ const ITEMS = [
 
 export default function ItemsPage() {
   const { data: session } = useSession()
+  const router = useRouter()
   const isAdmin = session?.user?.role === 'admin'
+
+  useEffect(() => {
+    if (session && !isAdmin) router.push('/dashboard')
+  }, [session, isAdmin, router])
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState('')
