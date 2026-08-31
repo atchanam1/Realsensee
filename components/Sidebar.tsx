@@ -73,7 +73,7 @@ export default function Sidebar() {
           </Link>
         ))}
 
-        {session?.user?.role === 'admin' && (
+        {['admin', 'superadmin'].includes(session?.user?.role || '') && (
           <>
             <div className="pt-4 pb-2">
               <p className="text-xs text-gray-600 uppercase tracking-wider px-3">Admin</p>

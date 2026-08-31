@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import AuthWrapper from '@/components/AuthWrapper'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
@@ -15,7 +15,7 @@ export default function MembersPage() {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   useEffect(() => {
-    if (session && !isAdminOrHigher) router.push('/dashboard')
+    if (session && !['admin', 'superadmin'].includes(session.user.role)) router.push('/dashboard')
   }, [session, router])
 
   const fetchMembers = async () => {
