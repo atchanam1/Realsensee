@@ -10,10 +10,10 @@ const menuItems = [
   { href: '/attendance', label: 'บันทึกการมา', icon: '📅' },
   { href: '/gang-history', label: 'ประวัติเข้า-ออกแก๊ง', icon: '🏃' },
   { href: '/gang-run', label: 'มารันแก๊ง', icon: '⚔️' },
+  { href: '/items', label: 'ส่งของ', icon: '📦' },
 ]
 
 const adminMenu = [
-  { href: '/items', label: 'ส่งของ', icon: '📦' },
   { href: '/members', label: 'จัดการสมาชิก', icon: '👥' },
 ]
 

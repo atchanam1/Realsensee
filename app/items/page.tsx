@@ -16,9 +16,6 @@ export default function ItemsPage() {
   const router = useRouter()
   const isAdmin = session?.user?.role === 'admin'
 
-  useEffect(() => {
-    if (session && session.user?.role !== 'admin') router.push('/dashboard')
-  }, [session, router])
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState('')
@@ -94,10 +91,14 @@ export default function ItemsPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">📦 ส่งของ</h1>
-          <p className="text-gray-400 text-sm mt-1">เลือกได้หลายอย่างพร้อมกัน ครั้งละ 100 ชิ้น/อย่าง</p>
+          <p className="text-gray-400 text-sm mt-1">
+            {isAdmin ? 'เลือกได้หลายอย่างพร้อมกัน ครั้งละ 100 ชิ้น/อย่าง' : 'ดูประวัติการส่งของในแก๊ง'}
+          </p>
         </div>
 
-        <div className="bg-[#111111] border border-[#222222] rounded-2xl p-6 mb-6">
+        {/* Admin-only send form */}
+        {isAdmin ? (
+          <div className="bg-[#111111] border border-[#222222] rounded-2xl p-6 mb-6">
           {/* Select Receiver */}
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-300 mb-2">เลือกผู้รับ</label>
@@ -175,6 +176,12 @@ export default function ItemsPage() {
             ) : `🚀 ส่งของ ${selectedItems.length > 0 ? `(${selectedItems.length} อย่าง)` : ''}`}
           </button>
         </div>
+        ) : (
+          <div className="bg-[#111111] border border-[#333] rounded-2xl p-5 mb-6 flex items-center gap-3 text-gray-500">
+            <span className="text-2xl">🔒</span>
+            <span className="text-sm">เฉพาะ Admin เท่านั้นที่สามารถส่งของได้</span>
+          </div>
+        )}
 
         {/* History */}
         <div className="bg-[#111111] border border-[#222222] rounded-2xl overflow-hidden">
