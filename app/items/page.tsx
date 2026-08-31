@@ -1,5 +1,6 @@
-﻿'use client'
+'use client'
 import AuthWrapper from '@/components/AuthWrapper'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -10,12 +11,15 @@ const ITEMS = [
 ]
 
 export default function ItemsPage() {
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [members, setMembers] = useState<any[]>([])
   const [history, setHistory] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState('')
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   const fetchData = async () => {
     setLoading(true)
@@ -63,6 +67,17 @@ export default function ItemsPage() {
       toast.error('เกิดข้อผิดพลาด')
     }
     setSending(false)
+  }
+
+  const handleDeleteHistory = async (id: string) => {
+    const res = await fetch(`/api/items?id=${id}`, { method: 'DELETE' })
+    if (res.ok) {
+      toast.success('ลบประวัติแล้ว')
+      setConfirmDelete(null)
+      fetchData()
+    } else {
+      toast.error('เกิดข้อผิดพลาด')
+    }
   }
 
   const itemMap = Object.fromEntries(ITEMS.map(i => [i.type, i]))
@@ -175,6 +190,7 @@ export default function ItemsPage() {
                   <th className="text-left p-4">ของ</th>
                   <th className="text-left p-4">จำนวน</th>
                   <th className="text-left p-4">เวลา</th>
+                  {isAdmin && <th className="text-left p-4">จัดการ</th>}
                 </tr>
               </thead>
               <tbody>
@@ -199,6 +215,16 @@ export default function ItemsPage() {
                     <td className="p-4 text-gray-500 text-xs">
                       {new Date(h.sent_at).toLocaleString('th-TH')}
                     </td>
+                    {isAdmin && (
+                      <td className="p-4">
+                        <button
+                          onClick={() => setConfirmDelete(h.id)}
+                          className="text-red-400 hover:text-red-300 text-sm transition"
+                        >
+                          🗑️
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -206,6 +232,30 @@ export default function ItemsPage() {
           )}
         </div>
       </div>
+
+      {/* Confirm Delete Modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-[#111111] border border-[#333] rounded-2xl p-6 max-w-sm w-full mx-4">
+            <h3 className="text-white font-bold text-lg mb-2">🗑️ ยืนยันลบประวัติ</h3>
+            <p className="text-gray-400 text-sm mb-6">ลบรายการนี้ออกจากประวัติ?</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="flex-1 bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-xl transition"
+              >
+                ยกเลิก
+              </button>
+              <button
+                onClick={() => handleDeleteHistory(confirmDelete)}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-xl transition"
+              >
+                ลบ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AuthWrapper>
   )
 }
