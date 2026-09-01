@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import AuthWrapper from '@/components/AuthWrapper'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
@@ -21,7 +21,7 @@ export default function LeaveHistoryPage() {
       const res = await fetch('/api/leave')
       const { data } = await res.json()
       // Filter own leaves if not admin
-      if (session?.user?.role === 'admin') {
+      if (['admin','superadmin'].includes(session?.user?.role || '')) {
         setLeaves(data || [])
       } else {
         setLeaves((data || []).filter((l: any) => l.user_id === session?.user?.id))
@@ -52,7 +52,7 @@ export default function LeaveHistoryPage() {
           <div>
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">📋 ประวัติการลา</h1>
             <p className="text-gray-400 text-sm mt-1">
-              {session?.user?.role === 'admin' ? 'คำขอลาทั้งหมด' : 'ประวัติการลาของคุณ'}
+              {['admin','superadmin'].includes(session?.user?.role || '') ? 'คำขอลาทั้งหมด' : 'ประวัติการลาของคุณ'}
             </p>
           </div>
           <a href="/leave" className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
@@ -71,18 +71,18 @@ export default function LeaveHistoryPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#2d2d4e] text-gray-400">
-                  {session?.user?.role === 'admin' && <th className="text-left p-4">สมาชิก</th>}
+                  {['admin','superadmin'].includes(session?.user?.role || '') && <th className="text-left p-4">สมาชิก</th>}
                   <th className="text-left p-4">เหตุผล</th>
                   <th className="text-left p-4">วันที่ลา</th>
                   <th className="text-left p-4">วันที่กลับ</th>
                   <th className="text-left p-4">สถานะ</th>
-                  {session?.user?.role === 'admin' && <th className="text-left p-4">จัดการ</th>}
+                  {['admin','superadmin'].includes(session?.user?.role || '') && <th className="text-left p-4">จัดการ</th>}
                 </tr>
               </thead>
               <tbody>
                 {leaves.map((leave: any) => (
                   <tr key={leave.id} className="border-b border-[#2d2d4e]/50 hover:bg-[#2d2d4e]/20 transition">
-                    {session?.user?.role === 'admin' && (
+                    {['admin','superadmin'].includes(session?.user?.role || '') && (
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <img
@@ -102,7 +102,7 @@ export default function LeaveHistoryPage() {
                         {statusMap[leave.status]?.label}
                       </span>
                     </td>
-                    {session?.user?.role === 'admin' && leave.status === 'pending' && (
+                    {['admin','superadmin'].includes(session?.user?.role || '') && leave.status === 'pending' && (
                       <td className="p-4">
                         <div className="flex gap-2">
                           <button
@@ -120,7 +120,7 @@ export default function LeaveHistoryPage() {
                         </div>
                       </td>
                     )}
-                    {session?.user?.role === 'admin' && leave.status !== 'pending' && (
+                    {['admin','superadmin'].includes(session?.user?.role || '') && leave.status !== 'pending' && (
                       <td className="p-4 text-gray-600 text-xs">-</td>
                     )}
                   </tr>
@@ -133,3 +133,4 @@ export default function LeaveHistoryPage() {
     </AuthWrapper>
   )
 }
+

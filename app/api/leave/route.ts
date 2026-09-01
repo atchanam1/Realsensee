@@ -1,21 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
+
+const isAdminOrHigher = (role?: string) => ['admin', 'superadmin'].includes(role || '')
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.isApproved) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { searchParams } = new URL(req.url)
-  const userId = searchParams.get('user_id') || session.user.id
-
-  const { data, error } = await supabaseAdmin
+  const query = supabaseAdmin
     .from('leaves')
     .select('*, users(username, avatar)')
-    .eq(session.user.role === 'admin' ? 'id' : 'user_id', session.user.role === 'admin' ? 'id' : session.user.id)
     .order('created_at', { ascending: false })
 
+  // Admin/superadmin sees all, member sees own only
+  if (!isAdminOrHigher(session.user.role)) {
+    query.eq('user_id', session.user.id)
+  }
+
+  const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ data })
 }
@@ -39,7 +43,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions)
-  if (session?.user?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  if (!isAdminOrHigher(session?.user?.role)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const body = await req.json()
   const { id, status } = body
